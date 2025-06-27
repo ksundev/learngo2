@@ -6,13 +6,17 @@ import (
 )
 
 func main() {
-	go ownCount("KSun")
-	go ownCount("Peter")
+	c := make(chan bool)
+	people := [2]string{"KSun", "Peter"}
+	for _, person := range people {
+		go isReady(person, c)
+	}
+	fmt.Println(<-c)
+	fmt.Println(<-c)
 }
 
-func ownCount(person string) {
-	for i := 0; i < 10; i++ {
-		fmt.Println(person, "is counting", i+1)
-		time.Sleep(time.Second)
-	}
+func isReady(person string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	fmt.Println(person, "is ready")
+	c <- true
 }
