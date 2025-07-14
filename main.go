@@ -6,17 +6,17 @@ import (
 )
 
 func main() {
-	c := make(chan bool)
-	people := [2]string{"KSun", "Peter"}
+	c := make(chan string)
+	people := [4]string{"KSun", "Peter", "John", "Chris"}
 	for _, person := range people {
 		go isReady(person, c)
 	}
-	fmt.Println(<-c)
-	fmt.Println(<-c)
+	for i := 0; i < len(people); i++ {
+		fmt.Println("Received:", <-c)
+	}
 }
 
-func isReady(person string, c chan bool) {
+func isReady(person string, c chan string) {
 	time.Sleep(time.Second * 5)
-	fmt.Println(person, "is ready")
-	c <- true
+	c <- person + " is ready"
 }
